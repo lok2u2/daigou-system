@@ -1,7 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>代购系统</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:sans-serif;
+    }
+
+    body{
+      background:#f5f5f5;
+      padding-bottom:100px;
+    }
+
+    .header{
+      background:black;
+      color:white;
+      padding:20px;
+      border-radius:0 0 20px 20px;
+    }
+
+    .title{
+      font-size:22px;
+      font-weight:bold;
+      margin-bottom:12px;
+    }
+
+    .search{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:12px;
+      outline:none;
+    }
+
+    .section{
+      padding:15px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+    }
+
+    .card{
+      background:white;
+      padding:15px;
+      border-radius:16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+      cursor:pointer;
+    }
+
+    .card-title{
+      font-weight:bold;
+      margin-bottom:6px;
+    }
+
+    .card-sub{
+      font-size:12px;
+      color:#666;
+    }
+
+    .order{
+      background:white;
+      padding:15px;
+      border-radius:16px;
+      margin-bottom:12px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    button{
+      border:none;
+      padding:8px 10px;
+      border-radius:10px;
+      margin-top:8px;
+      margin-right:5px;
+      cursor:pointer;
+    }
+
+    .modal{
+      display:none;
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      bottom:0;
+      background:rgba(0,0,0,0.5);
+      padding:20px;
+      z-index:999;
+    }
+
+    .modal-box{
+      background:white;
+      border-radius:20px;
+      padding:20px;
+      max-width:420px;
+      margin:auto;
+      margin-top:40px;
+    }
+
+    input,select{
+      width:100%;
+      padding:12px;
+      margin:6px 0;
+      border-radius:10px;
+      border:1px solid #ddd;
+      outline:none;
+    }
+
+    .submit-btn{
+      width:100%;
+      background:black;
+      color:white;
+      padding:12px;
+      border:none;
+      border-radius:12px;
+      margin-top:10px;
+    }
+
+    .close-btn{
+      width:100%;
+      background:#ddd;
+      color:black;
+      padding:12px;
+      border:none;
+      border-radius:12px;
+      margin-top:10px;
+    }
+
+  </style>
+</head>
+
+<body>
+
+<!-- 顶部 -->
+<div class="header">
+
+  <div class="title">
+    中越代购系统
+  </div>
+
+  <!-- 搜索实时监听 -->
+  <input
+    class="search"
+    placeholder="搜索客户 / 商品 / 订单号"
+    oninput="loadOrders()"
+  />
+
+</div>
+
+<!-- 财务统计 -->
+<div class="section">
+
+  <h3>财务统计</h3>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="card-title">总订单</div>
+      <h2 id="totalOrders">0</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">人民币</div>
+      <h2 id="totalCny">0</h2>
+    </div>
+
+    <div class="card">
+      <div class="card-title">越南盾</div>
+      <h2 id="totalVnd">0</h2>
+    </div>
+
+    <div class="card" onclick="openModal()">
+      <div class="card-title">➕ 新增订单</div>
+      <div class="card-sub">录入新商品</div>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- 图表 -->
+<div class="section">
+
+  <h3>平台统计</h3>
+
+  <canvas id="chart"></canvas>
+
+</div>
+
+<!-- 订单列表 -->
+<div class="section">
+
+  <h3>订单列表</h3>
+
+  <div id="orders"></div>
+
+</div>
+
+<!-- 弹窗 -->
+<div class="modal" id="modal">
+
+  <div class="modal-box">
+
+    <h2>新增订单</h2>
+
+    <input id="customer" placeholder="客户名称">
+
+    <input id="phone" placeholder="微信/Zalo">
+
+    <select id="platform">
+      <option>淘宝</option>
+      <option>拼多多</option>
+      <option>1688</option>
+      <option>京东</option>
+      <option>其他</option>
+    </select>
+
+    <input id="product" placeholder="商品名称">
+
+    <input id="orderId" placeholder="平台订单号">
+
+    <input id="track" placeholder="运单尾号4位">
+
+    <input id="cny" placeholder="人民币金额">
+
+    <input id="vnd" placeholder="越南盾金额">
+
+    <button class="submit-btn" onclick="submitOrder()">
+      提交订单
+    </button>
+
+    <button class="close-btn" onclick="closeModal()">
+      关闭
+    </button>
+
+  </div>
+
+</div>
+
+<script>
+
+const API = "https://apibuy.okla.de5.net"
+
+// 打开弹窗
+function openModal(){
+  document.getElementById("modal").style.display = "block"
+}
+
+// 关闭弹窗
+function closeModal(){
+  document.getElementById("modal").style.display = "none"
+}
+
+// 提交订单
+async function submitOrder(){
+
+  const data = {
+
+    customer: customer.value,
+
+    phone: phone.value,
+
+    platform: platform.value,
+
+    product: product.value,
+
+    platform_order_id: orderId.value,
+
+    tracking_last4: track.value,
+
+    amount_cny: Number(cny.value),
+
+    amount_vnd: Number(vnd.value)
+
+  }
+
+  const res = await fetch(
+    API + "/api/order/create",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify(data)
+    }
+  )
+
+  const result = await res.json()
+
+  if(result.success){
+
+    alert("订单创建成功")
+
+    closeModal()
+
+    loadOrders()
+
+    loadStats()
+
+  }else{
+
+    alert("创建失败")
+
+  }
+
+}
+
+// 状态更新
+async function setStatus(id,status){
+
+  await fetch(
+    API + "/api/order/update",
+    {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        id,
+        status
+      })
+    }
+  )
+
+  loadOrders()
+
+}
+
+// 复制通知
+function copyNotify(text){
+
+  navigator.clipboard.writeText(text)
+
+  alert("已复制通知")
+
+}
+
+// 加载订单（含搜索）
 async function loadOrders(){
 
   const keyword =
-    document.querySelector(".search").value.toLowerCase()
+    document.querySelector(".search")
+    .value
+    .toLowerCase()
 
   const res =
     await fetch(API + "/api/order/list")
@@ -14,16 +366,30 @@ async function loadOrders(){
 
   box.innerHTML = ""
 
-  // 模糊搜索
-  const filtered = data.filter(o => {
+  const filtered =
+    data.filter(o => {
 
-    return (
-      (o.customer || "").toLowerCase().includes(keyword) ||
-      (o.product || "").toLowerCase().includes(keyword) ||
-      (o.platform_order_id || "").toLowerCase().includes(keyword)
-    )
+      return (
 
-  })
+        (o.customer || "")
+        .toLowerCase()
+        .includes(keyword)
+
+        ||
+
+        (o.product || "")
+        .toLowerCase()
+        .includes(keyword)
+
+        ||
+
+        (o.platform_order_id || "")
+        .toLowerCase()
+        .includes(keyword)
+
+      )
+
+    })
 
   filtered.forEach(o => {
 
@@ -49,11 +415,13 @@ async function loadOrders(){
 
       <div class="order">
 
-        <b>${o.customer || "-"}</b><br/>
+        <b>${o.customer || "-"}</b><br/><br/>
 
+        商品：
         ${o.product || "-"}<br/>
 
-        平台：${o.platform || "-"}<br/>
+        平台：
+        ${o.platform || "-"}<br/>
 
         订单号：
         ${o.platform_order_id || "-"}<br/>
@@ -61,20 +429,20 @@ async function loadOrders(){
         运单尾号：
         ${o.tracking_last4 || "-"}<br/>
 
-        微信/Zalo：
+        联系方式：
         ${o.phone || "-"}<br/>
 
         人民币：
         ¥${o.amount_cny || 0}<br/>
 
         越南盾：
-        ${o.amount_vnd || 0}₫<br/>
+        ${o.amount_vnd || 0}₫<br/><br/>
 
         <small style="color:${color}">
           状态：${o.status}
         </small>
 
-        <br/><br/>
+        <br/>
 
         <button onclick="setStatus(${o.id},'arrived')">
           已到仓
@@ -99,14 +467,71 @@ async function loadOrders(){
 运单尾号：${o.tracking_last4}
 
 请发往越南河内。
-`)})
-        '>
+`)}
+        )'>
           复制通知
         </button>
 
       </div>
 
     `
+
   })
 
 }
+
+// 财务统计
+async function loadStats(){
+
+  const res =
+    await fetch(API + "/api/stats")
+
+  const data =
+    await res.json()
+
+  document.getElementById("totalOrders")
+    .innerText =
+    data.total_orders
+
+  document.getElementById("totalCny")
+    .innerText =
+    data.total_cny
+
+  document.getElementById("totalVnd")
+    .innerText =
+    data.total_vnd
+
+  const labels =
+    data.platforms.map(
+      p => p.platform
+    )
+
+  const values =
+    data.platforms.map(
+      p => p.total
+    )
+
+  new Chart(
+    document.getElementById("chart"),
+    {
+      type:"bar",
+      data:{
+        labels: labels,
+        datasets:[{
+          label:"订单数量",
+          data: values
+        }]
+      }
+    }
+  )
+
+}
+
+// 初始化
+loadOrders()
+loadStats()
+
+</script>
+
+</body>
+</html>
