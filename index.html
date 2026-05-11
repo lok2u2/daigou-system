@@ -91,6 +91,11 @@
       font-size:18px;
       margin-top:10px;
       cursor:pointer;
+      transition:0.2s;
+    }
+
+    .login-btn:active{
+      transform:scale(0.98);
     }
 
     .login-btn:disabled{
@@ -101,7 +106,6 @@
       margin-top:14px;
       text-align:center;
       font-size:14px;
-      color:red;
       min-height:20px;
     }
 
@@ -140,7 +144,7 @@
       <div class="input-group">
 
         <label class="label">
-          密码
+          系统密码
         </label>
 
         <input
@@ -188,6 +192,7 @@
 
       if(!password){
 
+        status.style.color = 'red'
         status.innerText = '请输入密码'
 
         return
@@ -200,19 +205,22 @@
 
       try{
 
-        const res = await fetch('/api/login', {
+        const res = await fetch(
+          'YOUR_WORKER_URL/api/login',
+          {
 
-          method:'POST',
+            method:'POST',
 
-          headers:{
-            'Content-Type':'application/json'
-          },
+            headers:{
+              'Content-Type':'application/json'
+            },
 
-          body:JSON.stringify({
-            password
-          })
+            body:JSON.stringify({
+              password
+            })
 
-        })
+          }
+        )
 
         const data = await res.json()
 
@@ -221,11 +229,17 @@
           status.style.color = 'green'
           status.innerText = '登录成功'
 
+          localStorage.setItem(
+            'daigou_login',
+            'true'
+          )
+
           setTimeout(() => {
 
-            window.location.href = '/home.html'
+            window.location.href =
+              '/home.html'
 
-          }, 800)
+          }, 1000)
 
         }else{
 
