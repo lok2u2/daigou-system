@@ -93,19 +93,16 @@
       cursor:pointer;
     }
 
-    .demo{
-      background:#f5f5f5;
-      border-radius:18px;
-      padding:16px;
-      margin-top:20px;
-      font-size:14px;
-      color:#666;
+    .login-btn:disabled{
+      opacity:0.6;
     }
 
-    .demo-title{
-      color:black;
-      font-weight:bold;
-      margin-bottom:10px;
+    .status{
+      margin-top:14px;
+      text-align:center;
+      font-size:14px;
+      color:red;
+      min-height:20px;
     }
 
     .bottom{
@@ -141,48 +138,32 @@
     <div class="card">
 
       <div class="input-group">
-        <label class="label">
-          账号
-        </label>
 
-        <input
-          class="input"
-          type="text"
-          placeholder="请输入账号"
-        />
-      </div>
-
-      <div class="input-group">
         <label class="label">
           密码
         </label>
 
         <input
+          id="password"
           class="input"
           type="password"
-          placeholder="请输入密码"
+          placeholder="请输入系统密码"
         />
+
       </div>
 
-      <button class="login-btn">
+      <button
+        id="loginBtn"
+        class="login-btn"
+        onclick="login()"
+      >
         登录系统
       </button>
 
-      <div class="demo">
-
-        <div class="demo-title">
-          测试账号
-        </div>
-
-        <div>
-          账号：admin
-        </div>
-
-        <div style="margin-top:6px;">
-          密码：123456
-        </div>
-
-      </div>
+      <div
+        id="status"
+        class="status"
+      ></div>
 
     </div>
 
@@ -191,6 +172,81 @@
     </div>
 
   </div>
+
+  <script>
+
+    async function login(){
+
+      const password =
+        document.getElementById('password').value
+
+      const status =
+        document.getElementById('status')
+
+      const button =
+        document.getElementById('loginBtn')
+
+      if(!password){
+
+        status.innerText = '请输入密码'
+
+        return
+      }
+
+      button.disabled = true
+      button.innerText = '登录中...'
+
+      status.innerText = ''
+
+      try{
+
+        const res = await fetch('/api/login', {
+
+          method:'POST',
+
+          headers:{
+            'Content-Type':'application/json'
+          },
+
+          body:JSON.stringify({
+            password
+          })
+
+        })
+
+        const data = await res.json()
+
+        if(data.success){
+
+          status.style.color = 'green'
+          status.innerText = '登录成功'
+
+          setTimeout(() => {
+
+            window.location.href = '/home.html'
+
+          }, 800)
+
+        }else{
+
+          status.style.color = 'red'
+          status.innerText = '密码错误'
+
+        }
+
+      }catch(err){
+
+        status.style.color = 'red'
+        status.innerText = '服务器连接失败'
+
+      }
+
+      button.disabled = false
+      button.innerText = '登录系统'
+
+    }
+
+  </script>
 
 </body>
 </html>
