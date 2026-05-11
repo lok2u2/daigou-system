@@ -12,195 +12,127 @@
       margin:0;
       padding:0;
       box-sizing:border-box;
+      font-family:sans-serif;
     }
 
     body{
       background:#f5f5f5;
-      font-family:sans-serif;
       padding-bottom:90px;
     }
 
+    /* ===== 顶部 ===== */
     .header{
       background:black;
       color:white;
-      padding:24px;
-      border-radius:0 0 28px 28px;
+      padding:20px;
+      border-radius:0 0 24px 24px;
     }
 
     .title{
-      font-size:28px;
+      font-size:22px;
       font-weight:bold;
-      margin-bottom:18px;
+      margin-bottom:12px;
     }
 
     .search{
       width:100%;
+      padding:12px;
+      border-radius:14px;
       border:none;
-      border-radius:18px;
-      padding:16px;
-      font-size:16px;
       outline:none;
     }
 
+    /* ===== 快捷功能 ===== */
     .section{
-      padding:18px;
+      padding:15px;
     }
 
-    .section-title{
-      font-size:22px;
-      font-weight:bold;
-      margin-bottom:14px;
-    }
-
-    .quick-grid{
+    .grid{
       display:grid;
       grid-template-columns:1fr 1fr;
-      gap:14px;
+      gap:12px;
     }
 
     .card{
       background:white;
-      border-radius:24px;
-      padding:20px;
-      box-shadow:0 2px 10px rgba(0,0,0,0.05);
-    }
-
-    .icon{
-      font-size:34px;
-      margin-bottom:12px;
-    }
-
-    .card-title{
-      font-size:18px;
-      font-weight:bold;
-    }
-
-    .card-sub{
-      color:#666;
-      margin-top:6px;
-      font-size:14px;
-    }
-
-    .status-grid{
-      display:grid;
-      grid-template-columns:1fr 1fr 1fr;
-      gap:12px;
-    }
-
-    .status-card{
-      background:white;
-      border-radius:22px;
-      padding:18px;
-      text-align:center;
-    }
-
-    .status-number{
-      font-size:28px;
-      font-weight:bold;
-      margin-bottom:6px;
-    }
-
-    .yellow{
-      color:#e6a700;
-    }
-
-    .blue{
-      color:#0066ff;
-    }
-
-    .purple{
-      color:purple;
-    }
-
-    .status-text{
-      color:#666;
-      font-size:14px;
-    }
-
-    .order-card{
-      background:white;
-      border-radius:24px;
-      padding:18px;
-      margin-bottom:14px;
-    }
-
-    .order-top{
-      display:flex;
-      justify-content:space-between;
-      align-items:flex-start;
-    }
-
-    .customer{
-      font-size:18px;
-      font-weight:bold;
-    }
-
-    .product{
-      color:#666;
-      margin-top:6px;
-    }
-
-    .badge{
-      background:#f3f3f3;
-      border-radius:12px;
-      padding:6px 12px;
-      font-size:13px;
-    }
-
-    .bottom-row{
-      margin-top:18px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-    }
-
-    .tracking{
-      color:#666;
-    }
-
-    .tracking-number{
-      color:black;
-      font-size:20px;
-      font-weight:bold;
-      margin-left:6px;
-    }
-
-    .notify-btn{
-      background:black;
-      color:white;
-      border:none;
-      border-radius:14px;
-      padding:10px 16px;
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 2px 8px rgba(0,0,0,0.05);
       cursor:pointer;
     }
 
-    .nav{
-      position:fixed;
-      bottom:0;
-      left:0;
-      right:0;
-      background:white;
-      border-top:1px solid #eee;
-      height:74px;
-      display:flex;
-      justify-content:space-around;
-      align-items:center;
+    .icon{
+      font-size:26px;
     }
 
-    .nav-item{
-      text-align:center;
-      color:#666;
-      font-size:12px;
-    }
-
-    .nav-item.active{
-      color:black;
+    .card-title{
       font-weight:bold;
+      margin-top:6px;
     }
 
-    .nav-icon{
-      font-size:24px;
-      margin-bottom:4px;
+    .card-sub{
+      font-size:12px;
+      color:#666;
+    }
+
+    /* ===== 弹窗 ===== */
+    .modal{
+      display:none;
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:rgba(0,0,0,0.6);
+      padding:20px;
+      z-index:999;
+    }
+
+    .modal-box{
+      background:white;
+      border-radius:20px;
+      padding:18px;
+      max-width:420px;
+      margin:auto;
+      margin-top:40px;
+    }
+
+    .modal-box h2{
+      margin-bottom:10px;
+    }
+
+    input,select{
+      width:100%;
+      padding:10px;
+      margin:6px 0;
+      border:1px solid #ddd;
+      border-radius:10px;
+      outline:none;
+    }
+
+    .btn{
+      width:100%;
+      padding:12px;
+      background:black;
+      color:white;
+      border:none;
+      border-radius:12px;
+      margin-top:10px;
+    }
+
+    .close{
+      background:#eee;
+      color:black;
+    }
+
+    /* ===== 订单卡片 ===== */
+    .order{
+      background:white;
+      padding:14px;
+      border-radius:16px;
+      margin-bottom:10px;
+    }
+
+    .status{
+      font-size:12px;
+      color:green;
     }
 
   </style>
@@ -208,157 +140,137 @@
 
 <body>
 
-  <div class="header">
+<!-- ===== 顶部 ===== -->
+<div class="header">
+  <div class="title">中越代购系统</div>
+  <input class="search" placeholder="搜索订单 / 客户 / 运单号"/>
+</div>
 
-    <div class="title">
-      中越代购系统
+<!-- ===== 快捷功能 ===== -->
+<div class="section">
+
+  <div class="grid">
+
+    <div class="card" onclick="openModal()">
+      <div class="icon">➕</div>
+      <div class="card-title">新增订单</div>
+      <div class="card-sub">录入商品</div>
     </div>
 
-    <input
-      class="search"
-      placeholder="搜索订单 / 客户 / 运单"
-    />
-
-  </div>
-
-  <div class="section">
-
-    <div class="section-title">
-      快捷功能
-    </div>
-
-    <div class="quick-grid">
-
-      <div class="card">
-        <div class="icon">📦</div>
-        <div class="card-title">新增订单</div>
-        <div class="card-sub">快速录入商品</div>
-      </div>
-
-      <div class="card">
-        <div class="icon">🔔</div>
-        <div class="card-title">复制通知</div>
-        <div class="card-sub">越南文通知</div>
-      </div>
-
-      <div class="card">
-        <div class="icon">👤</div>
-        <div class="card-title">新增客户</div>
-        <div class="card-sub">微信 / Zalo</div>
-      </div>
-
-      <div class="card">
-        <div class="icon">📊</div>
-        <div class="card-title">财务统计</div>
-        <div class="card-sub">利润与销售</div>
-      </div>
-
+    <div class="card">
+      <div class="icon">📦</div>
+      <div class="card-title">订单列表</div>
+      <div class="card-sub">查看全部</div>
     </div>
 
   </div>
 
-  <div class="section">
+</div>
 
-    <div class="section-title">
-      今日业务
-    </div>
+<!-- ===== 订单列表 ===== -->
+<div class="section">
+  <h3>最近订单</h3>
+  <div id="orders"></div>
+</div>
 
-    <div class="status-grid">
+<!-- ===== 弹窗 ===== -->
+<div class="modal" id="modal">
 
-      <div class="status-card">
-        <div class="status-number yellow">12</div>
-        <div class="status-text">待到仓</div>
-      </div>
+  <div class="modal-box">
 
-      <div class="status-card">
-        <div class="status-number blue">5</div>
-        <div class="status-text">待通知</div>
-      </div>
+    <h2>新增订单</h2>
 
-      <div class="status-card">
-        <div class="status-number purple">8</div>
-        <div class="status-text">运输中</div>
-      </div>
+    <input id="customer" placeholder="客户名称">
+    <input id="phone" placeholder="电话">
 
-    </div>
+    <select id="platform">
+      <option>淘宝</option>
+      <option>拼多多</option>
+      <option>1688</option>
+      <option>京东</option>
+      <option>其他</option>
+    </select>
 
-  </div>
+    <input id="product" placeholder="商品名称">
+    <input id="orderId" placeholder="平台订单号">
+    <input id="track" placeholder="运单尾号4位">
 
-  <div class="section">
+    <input id="cny" placeholder="人民币金额">
+    <input id="vnd" placeholder="越南盾金额">
 
-    <div class="section-title">
-      最近订单
-    </div>
-
-    <div class="order-card">
-
-      <div class="order-top">
-
-        <div>
-
-          <div class="customer">
-            张三
-          </div>
-
-          <div class="product">
-            Nike鞋 ×2
-          </div>
-
-        </div>
-
-        <div class="badge">
-          已到仓
-        </div>
-
-      </div>
-
-      <div class="bottom-row">
-
-        <div class="tracking">
-          物流尾号：
-          <span class="tracking-number">
-            6789
-          </span>
-        </div>
-
-        <button class="notify-btn">
-          复制通知
-        </button>
-
-      </div>
-
-    </div>
+    <button class="btn" onclick="submitOrder()">提交订单</button>
+    <button class="btn close" onclick="closeModal()">关闭</button>
 
   </div>
 
-  <div class="nav">
+</div>
 
-    <div class="nav-item active">
-      <div class="nav-icon">🏠</div>
-      首页
-    </div>
+<script>
 
-    <div class="nav-item">
-      <div class="nav-icon">📦</div>
-      订单
-    </div>
+const API = "https://daigou-api.lok2u2.workers.dev"
 
-    <div class="nav-item">
-      <div class="nav-icon">👥</div>
-      客户
-    </div>
+function openModal(){
+  document.getElementById("modal").style.display="block"
+}
 
-    <div class="nav-item">
-      <div class="nav-icon">📊</div>
-      财务
-    </div>
+function closeModal(){
+  document.getElementById("modal").style.display="none"
+}
 
-    <div class="nav-item">
-      <div class="nav-icon">⚙️</div>
-      设置
-    </div>
+async function submitOrder(){
 
-  </div>
+  const data = {
+    customer: customer.value,
+    phone: phone.value,
+    platform: platform.value,
+    product: product.value,
+    platform_order_id: orderId.value,
+    tracking_last4: track.value,
+    amount_cny: Number(cny.value),
+    amount_vnd: Number(vnd.value)
+  }
+
+  const res = await fetch(API + "/api/order/create", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify(data)
+  })
+
+  const result = await res.json()
+
+  if(result.success){
+    alert("添加成功")
+    closeModal()
+    loadOrders()
+  }else{
+    alert("失败")
+  }
+}
+
+async function loadOrders(){
+
+  const res = await fetch(API + "/api/order/list")
+  const data = await res.json()
+
+  const box = document.getElementById("orders")
+  box.innerHTML = ""
+
+  data.slice(0,5).forEach(o => {
+
+    box.innerHTML += `
+      <div class="order">
+        <b>${o.customer}</b><br/>
+        ${o.product}<br/>
+        <span class="status">${o.status}</span>
+      </div>
+    `
+  })
+
+}
+
+loadOrders()
+
+</script>
 
 </body>
 </html>
