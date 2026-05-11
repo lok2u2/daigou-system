@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>代购系统</title>
+  <title>中越代购系统</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -36,7 +36,7 @@
     }
 
     .search{
-      width:100%;
+      flex:1;
       padding:12px;
       border:none;
       border-radius:12px;
@@ -150,12 +150,31 @@
     中越代购系统
   </div>
 
-  <!-- 搜索实时监听 -->
-  <input
-    class="search"
-    placeholder="搜索客户 / 商品 / 订单号"
-    oninput="loadOrders()"
-  />
+  <!-- 搜索 -->
+  <div style="display:flex; gap:8px;">
+
+    <input
+      id="searchInput"
+      class="search"
+      placeholder="搜索客户 / 商品 / 订单号"
+      oninput="loadOrders()"
+    />
+
+    <button
+      onclick="loadOrders()"
+      style="
+        background:white;
+        color:black;
+        border:none;
+        padding:0 16px;
+        border-radius:12px;
+        font-weight:bold;
+      "
+    >
+      搜索
+    </button>
+
+  </div>
 
 </div>
 
@@ -317,7 +336,7 @@ async function submitOrder(){
 
 }
 
-// 状态更新
+// 更新状态
 async function setStatus(id,status){
 
   await fetch(
@@ -347,11 +366,12 @@ function copyNotify(text){
 
 }
 
-// 加载订单（含搜索）
+// 加载订单
 async function loadOrders(){
 
   const keyword =
-    document.querySelector(".search")
+    document
+    .getElementById("searchInput")
     .value
     .toLowerCase()
 
@@ -457,8 +477,7 @@ async function loadOrders(){
         </button>
 
         <button onclick='copyNotify(
-          ${JSON.stringify(`
-客户：${o.customer}
+`${`客户：${o.customer}
 
 商品：${o.product}
 
@@ -466,8 +485,7 @@ async function loadOrders(){
 
 运单尾号：${o.tracking_last4}
 
-请发往越南河内。
-`)}
+请发往越南河内。`}`
         )'>
           复制通知
         </button>
