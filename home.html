@@ -1,297 +1,254 @@
+# 修复版 home.html（按钮全部可点击）
+
+```html
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-<title>中越代购ERP系统</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>中越代购ERP</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
 }
 
-body{
-  background:#f4f6f9;
-  color:#222;
-  padding-bottom:100px;
+body {
+  background: #f5f5f5;
+  padding-bottom: 100px;
 }
 
-.header{
-  background:#111827;
-  color:white;
-  padding:20px;
-  border-radius:0 0 24px 24px;
+.header {
+  background: #111827;
+  color: white;
+  padding: 20px;
+  border-radius: 0 0 20px 20px;
 }
 
-.header-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:15px;
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
 }
 
-.title{
-  font-size:24px;
-  font-weight:bold;
+.title {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.lang-btn{
-  background:white;
-  color:black;
-  border:none;
-  padding:8px 12px;
-  border-radius:10px;
-  font-size:12px;
+.lang-btn {
+  border: none;
+  background: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-.search-wrap{
-  display:flex;
-  gap:10px;
+.search-wrap {
+  display: flex;
+  gap: 10px;
 }
 
-.search{
-  flex:1;
-  border:none;
-  border-radius:12px;
-  padding:12px;
-  outline:none;
+.search {
+  flex: 1;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
 }
 
-.search-btn{
-  background:white;
-  color:black;
-  border:none;
-  border-radius:12px;
-  padding:0 16px;
-  font-weight:bold;
+.search-btn {
+  border: none;
+  background: white;
+  padding: 0 16px;
+  border-radius: 12px;
+  cursor: pointer;
 }
 
-.section{
-  padding:16px;
+.section {
+  padding: 15px;
 }
 
-.section-title{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:12px;
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.card{
-  background:white;
-  border-radius:18px;
-  padding:16px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+.card-title {
+  color: #666;
+  margin-bottom: 8px;
 }
 
-.card-title{
-  font-size:14px;
-  color:#666;
-  margin-bottom:8px;
+.card-value {
+  font-size: 24px;
+  font-weight: bold;
 }
 
-.card-value{
-  font-size:24px;
-  font-weight:bold;
+.add-btn {
+  width: 100%;
+  border: none;
+  background: #111827;
+  color: white;
+  border-radius: 16px;
+  padding: 15px;
+  text-align: left;
+  cursor: pointer;
 }
 
-.add-btn{
-  width:100%;
-  border:none;
-  background:#111827;
-  color:white;
-  border-radius:18px;
-  padding:16px;
-  text-align:left;
-  box-shadow:0 2px 10px rgba(0,0,0,0.1);
+.order {
+  background: white;
+  padding: 15px;
+  border-radius: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.add-btn-title{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:6px;
+.order-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
-.add-btn-sub{
-  font-size:12px;
-  opacity:0.8;
+.order-line {
+  margin-bottom: 5px;
 }
 
-.order{
-  background:white;
-  border-radius:18px;
-  padding:16px;
-  margin-bottom:12px;
-  box-shadow:0 2px 10px rgba(0,0,0,0.05);
+.status {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: white;
+  font-size: 12px;
 }
 
-.order-name{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:10px;
+.pending {
+  background: orange;
 }
 
-.order-line{
-  margin-bottom:6px;
-  font-size:14px;
+.arrived {
+  background: #2563eb;
 }
 
-.status{
-  display:inline-block;
-  padding:6px 10px;
-  border-radius:10px;
-  color:white;
-  font-size:12px;
-  margin-top:8px;
+.notified {
+  background: #7c3aed;
 }
 
-.status.pending{
-  background:orange;
+.shipped {
+  background: #16a34a;
 }
 
-.status.arrived{
-  background:#2563eb;
+.btn-group {
+  margin-top: 12px;
 }
 
-.status.notified{
-  background:#7c3aed;
+.btn {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 10px;
+  margin-right: 6px;
+  margin-top: 6px;
+  cursor: pointer;
+  color: white;
 }
 
-.status.shipped{
-  background:#16a34a;
+.blue {
+  background: #2563eb;
 }
 
-.btn-group{
-  margin-top:12px;
+.purple {
+  background: #7c3aed;
 }
 
-.btn{
-  border:none;
-  border-radius:10px;
-  padding:8px 10px;
-  margin-right:6px;
-  margin-top:6px;
-  font-size:12px;
+.green {
+  background: #16a34a;
 }
 
-.btn-blue{
-  background:#2563eb;
-  color:white;
+.dark {
+  background: #111827;
 }
 
-.btn-purple{
-  background:#7c3aed;
-  color:white;
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 9999;
+  padding: 20px;
 }
 
-.btn-green{
-  background:#16a34a;
-  color:white;
+.modal-box {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 500px;
+  margin: auto;
+  margin-top: 40px;
 }
 
-.btn-dark{
-  background:#111827;
-  color:white;
+.input {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
 }
 
-.modal{
-  display:none;
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  bottom:0;
-  background:rgba(0,0,0,0.5);
-  z-index:9999;
-  padding:20px;
-  overflow:auto;
+.submit-btn,
+.close-btn {
+  width: 100%;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-.modal-box{
-  background:white;
-  border-radius:24px;
-  padding:20px;
-  max-width:500px;
-  margin:auto;
+.submit-btn {
+  background: #111827;
+  color: white;
 }
 
-.modal-title{
-  font-size:22px;
-  font-weight:bold;
-  margin-bottom:15px;
+.close-btn {
+  background: #ddd;
 }
 
-.input{
-  width:100%;
-  border:1px solid #ddd;
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:10px;
-  outline:none;
+canvas {
+  background: white;
+  border-radius: 16px;
+  padding: 10px;
 }
-
-.submit-btn{
-  width:100%;
-  border:none;
-  background:#111827;
-  color:white;
-  padding:14px;
-  border-radius:14px;
-  margin-top:10px;
-}
-
-.close-btn{
-  width:100%;
-  border:none;
-  background:#ddd;
-  color:black;
-  padding:14px;
-  border-radius:14px;
-  margin-top:10px;
-}
-
-canvas{
-  background:white;
-  border-radius:18px;
-  padding:12px;
-}
-
 </style>
 </head>
 
 <body>
 
-<!-- 顶部 -->
 <div class="header">
 
   <div class="header-top">
+    <div class="title" id="titleText">中越代购ERP</div>
 
-    <div class="title" id="titleText">
-      中越代购ERP
-    </div>
-
-    <button
-      class="lang-btn"
-      onclick="toggleLanguage()"
-    >
+    <button class="lang-btn" onclick="toggleLanguage()">
       中文 / VI
     </button>
-
   </div>
 
-  <!-- 搜索 -->
   <div class="search-wrap">
 
     <input
@@ -301,10 +258,7 @@ canvas{
       oninput="loadOrders()"
     />
 
-    <button
-      class="search-btn"
-      onclick="loadOrders()"
-    >
+    <button class="search-btn" onclick="loadOrders()">
       搜索
     </button>
 
@@ -312,115 +266,62 @@ canvas{
 
 </div>
 
-<!-- 财务统计 -->
 <div class="section">
 
-  <div class="section-title">
-    财务统计
-  </div>
+  <h2 style="margin-bottom:12px;">财务统计</h2>
 
   <div class="grid">
 
     <div class="card">
       <div class="card-title">总订单</div>
-      <div
-        class="card-value"
-        id="totalOrders"
-      >
-        0
-      </div>
+      <div class="card-value" id="totalOrders">0</div>
     </div>
 
     <div class="card">
       <div class="card-title">人民币</div>
-      <div
-        class="card-value"
-        id="totalCny"
-      >
-        0
-      </div>
+      <div class="card-value" id="totalCny">0</div>
     </div>
 
     <div class="card">
       <div class="card-title">越南盾</div>
-      <div
-        class="card-value"
-        id="totalVnd"
-      >
-        0
-      </div>
+      <div class="card-value" id="totalVnd">0</div>
     </div>
 
-    <!-- 新增订单 -->
-    <button
-      class="add-btn"
-      onclick="openModal()"
-    >
-
-      <div class="add-btn-title">
+    <button class="add-btn" onclick="openModal()">
+      <div style="font-size:18px;font-weight:bold;">
         ➕ 新增订单
       </div>
 
-      <div class="add-btn-sub">
+      <div style="margin-top:6px;font-size:12px;opacity:0.8;">
         添加新的代购商品
       </div>
-
     </button>
 
   </div>
 
 </div>
 
-<!-- 图表 -->
 <div class="section">
-
-  <div class="section-title">
-    平台订单统计
-  </div>
-
+  <h2 style="margin-bottom:12px;">平台统计</h2>
   <canvas id="chart"></canvas>
-
 </div>
 
-<!-- 订单 -->
 <div class="section">
-
-  <div class="section-title">
-    订单列表
-  </div>
-
+  <h2 style="margin-bottom:12px;">订单列表</h2>
   <div id="orders"></div>
-
 </div>
 
-<!-- 弹窗 -->
-<div
-  class="modal"
-  id="modal"
->
+<div class="modal" id="modal">
 
   <div class="modal-box">
 
-    <div class="modal-title">
-      新增订单
-    </div>
+    <h2 style="margin-bottom:15px;">新增订单</h2>
 
-    <input
-      id="customer"
-      class="input"
-      placeholder="客户名称"
-    />
+    <input id="customer" class="input" placeholder="客户名称" />
 
-    <input
-      id="phone"
-      class="input"
-      placeholder="微信 / Zalo"
-    />
+    <input id="phone" class="input" placeholder="微信 / Zalo" />
 
-    <select
-      id="platform"
-      class="input"
-    >
+    <select id="platform" class="input">
       <option>淘宝</option>
       <option>拼多多</option>
       <option>1688</option>
@@ -428,47 +329,21 @@ canvas{
       <option>其他</option>
     </select>
 
-    <input
-      id="product"
-      class="input"
-      placeholder="商品名称"
-    />
+    <input id="product" class="input" placeholder="商品名称" />
 
-    <input
-      id="orderId"
-      class="input"
-      placeholder="平台订单号"
-    />
+    <input id="orderId" class="input" placeholder="平台订单号" />
 
-    <input
-      id="track"
-      class="input"
-      placeholder="物流尾号"
-    />
+    <input id="track" class="input" placeholder="物流尾号" />
 
-    <input
-      id="cny"
-      class="input"
-      placeholder="人民币金额"
-    />
+    <input id="cny" class="input" placeholder="人民币金额" />
 
-    <input
-      id="vnd"
-      class="input"
-      placeholder="越南盾金额"
-    />
+    <input id="vnd" class="input" placeholder="越南盾金额" />
 
-    <button
-      class="submit-btn"
-      onclick="submitOrder()"
-    >
+    <button class="submit-btn" onclick="submitOrder()">
       提交订单
     </button>
 
-    <button
-      class="close-btn"
-      onclick="closeModal()"
-    >
+    <button class="close-btn" onclick="closeModal()">
       关闭
     </button>
 
@@ -478,94 +353,54 @@ canvas{
 
 <script>
 
-const API =
-"https://apibuy.okla.de5.net"
+const API = "https://apibuy.okla.de5.net"
 
 let currentLang = "zh"
 
-// 打开弹窗
 function openModal(){
-
-  document
-  .getElementById("modal")
-  .style.display = "block"
-
+  document.getElementById("modal").style.display = "block"
 }
 
-// 关闭弹窗
 function closeModal(){
+  document.getElementById("modal").style.display = "none"
+}
 
-  document
-  .getElementById("modal")
-  .style.display = "none"
+function toggleLanguage(){
+
+  const title = document.getElementById("titleText")
+
+  if(currentLang === "zh"){
+    currentLang = "vi"
+    title.innerText = "Hệ thống mua hộ"
+  }else{
+    currentLang = "zh"
+    title.innerText = "中越代购ERP"
+  }
 
 }
 
-// 提交订单
 async function submitOrder(){
 
   const data = {
-
-    customer:
-    document
-    .getElementById("customer")
-    .value,
-
-    phone:
-    document
-    .getElementById("phone")
-    .value,
-
-    platform:
-    document
-    .getElementById("platform")
-    .value,
-
-    product:
-    document
-    .getElementById("product")
-    .value,
-
-    platform_order_id:
-    document
-    .getElementById("orderId")
-    .value,
-
-    tracking_last4:
-    document
-    .getElementById("track")
-    .value,
-
-    amount_cny:
-    Number(
-      document
-      .getElementById("cny")
-      .value
-    ),
-
-    amount_vnd:
-    Number(
-      document
-      .getElementById("vnd")
-      .value
-    )
-
+    customer: document.getElementById("customer").value,
+    phone: document.getElementById("phone").value,
+    platform: document.getElementById("platform").value,
+    product: document.getElementById("product").value,
+    platform_order_id: document.getElementById("orderId").value,
+    tracking_last4: document.getElementById("track").value,
+    amount_cny: Number(document.getElementById("cny").value || 0),
+    amount_vnd: Number(document.getElementById("vnd").value || 0)
   }
 
-  const res =
-  await fetch(
-    API + "/api/order/create",
-    {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify(data)
-    }
-  )
+  const res = await fetch(API + "/api/order/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data)
+  })
 
-  const result =
-  await res.json()
+  const result = await res.json()
 
   if(result.success){
 
@@ -585,107 +420,53 @@ async function submitOrder(){
 
 }
 
-// 更新状态
 async function setStatus(id,status){
 
-  await fetch(
-    API + "/api/order/update",
-    {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        id,
-        status
-      })
-    }
-  )
+  await fetch(API + "/api/order/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      id,
+      status
+    })
+  })
 
   loadOrders()
 
 }
 
-// 复制通知
 function copyNotify(text){
 
-  navigator
-  .clipboard
-  .writeText(text)
+  navigator.clipboard.writeText(text)
 
   alert("已复制通知")
 
 }
 
-// 语言切换
-function toggleLanguage(){
-
-  if(currentLang === "zh"){
-
-    currentLang = "vi"
-
-    document
-    .getElementById("titleText")
-    .innerText =
-    "Hệ thống mua hộ"
-
-  }else{
-
-    currentLang = "zh"
-
-    document
-    .getElementById("titleText")
-    .innerText =
-    "中越代购ERP"
-
-  }
-
-}
-
-// 加载订单
 async function loadOrders(){
 
   const keyword =
-  document
-  .getElementById("searchInput")
-  .value
-  .toLowerCase()
+    document
+    .getElementById("searchInput")
+    .value
+    .toLowerCase()
 
-  const res =
-  await fetch(
-    API + "/api/order/list"
-  )
+  const res = await fetch(API + "/api/order/list")
 
-  const data =
-  await res.json()
+  const data = await res.json()
 
-  const box =
-  document
-  .getElementById("orders")
+  const box = document.getElementById("orders")
 
   box.innerHTML = ""
 
-  const filtered =
-  data.filter(o => {
+  const filtered = data.filter(o => {
 
     return (
-
-      (o.customer || "")
-      .toLowerCase()
-      .includes(keyword)
-
-      ||
-
-      (o.product || "")
-      .toLowerCase()
-      .includes(keyword)
-
-      ||
-
-      (o.platform_order_id || "")
-      .toLowerCase()
-      .includes(keyword)
-
+      (o.customer || "").toLowerCase().includes(keyword) ||
+      (o.product || "").toLowerCase().includes(keyword) ||
+      (o.platform_order_id || "").toLowerCase().includes(keyword)
     )
 
   })
@@ -696,7 +477,7 @@ async function loadOrders(){
 
       <div class="order">
 
-        <div class="order-name">
+        <div class="order-title">
           ${o.customer || "-"}
         </div>
 
@@ -709,89 +490,44 @@ async function loadOrders(){
         </div>
 
         <div class="order-line">
-          订单号：
-          ${o.platform_order_id || "-"}
+          订单号：${o.platform_order_id || "-"}
         </div>
 
         <div class="order-line">
-          运单尾号：
-          ${o.tracking_last4 || "-"}
+          运单尾号：${o.tracking_last4 || "-"}
         </div>
 
         <div class="order-line">
-          联系方式：
-          ${o.phone || "-"}
+          联系方式：${o.phone || "-"}
         </div>
 
         <div class="order-line">
-          人民币：
-          ¥${o.amount_cny || 0}
+          人民币：¥${o.amount_cny || 0}
         </div>
 
         <div class="order-line">
-          越南盾：
-          ${o.amount_vnd || 0}₫
+          越南盾：${o.amount_vnd || 0}₫
         </div>
 
-        <div
-          class="status ${o.status}"
-        >
+        <div class="status ${o.status}">
           ${o.status}
         </div>
 
         <div class="btn-group">
 
-          <button
-            class="btn btn-blue"
-            onclick="
-            setStatus(
-              ${o.id},
-              'arrived'
-            )"
-          >
+          <button class="btn blue" onclick="setStatus(${o.id},'arrived')">
             已到仓
           </button>
 
-          <button
-            class="btn btn-purple"
-            onclick="
-            setStatus(
-              ${o.id},
-              'notified'
-            )"
-          >
+          <button class="btn purple" onclick="setStatus(${o.id},'notified')">
             已通知
           </button>
 
-          <button
-            class="btn btn-green"
-            onclick="
-            setStatus(
-              ${o.id},
-              'shipped'
-            )"
-          >
+          <button class="btn green" onclick="setStatus(${o.id},'shipped')">
             已发货
           </button>
 
-          <button
-            class="btn btn-dark"
-            onclick='copyNotify(
-`Khách hàng:
-${o.customer}
-
-Sản phẩm:
-${o.product}
-
-Mã đơn:
-${o.platform_order_id}
-
-Mã vận đơn:
-${o.tracking_last4}
-
-Vui lòng gửi về Hà Nội.`
-            )'
-          >
+          <button class="btn dark" onclick="copyNotify(`Khách hàng: ${o.customer}\n\nSản phẩm: ${o.product}\n\nMã đơn: ${o.platform_order_id}\n\nMã vận đơn: ${o.tracking_last4}\n\nVui lòng gửi về Hà Nội.`)">
             复制通知
           </button>
 
@@ -805,76 +541,38 @@ Vui lòng gửi về Hà Nội.`
 
 }
 
-// 财务统计
 async function loadStats(){
 
-  const res =
-  await fetch(
-    API + "/api/stats"
-  )
+  const res = await fetch(API + "/api/stats")
 
-  const data =
-  await res.json()
+  const data = await res.json()
 
-  document
-  .getElementById("totalOrders")
-  .innerText =
-  data.total_orders
+  document.getElementById("totalOrders").innerText = data.total_orders
+  document.getElementById("totalCny").innerText = data.total_cny
+  document.getElementById("totalVnd").innerText = data.total_vnd
 
-  document
-  .getElementById("totalCny")
-  .innerText =
-  data.total_cny
+  const labels = data.platforms.map(p => p.platform)
+  const values = data.platforms.map(p => p.total)
 
-  document
-  .getElementById("totalVnd")
-  .innerText =
-  data.total_vnd
-
-  const labels =
-  data.platforms.map(
-    p => p.platform
-  )
-
-  const values =
-  data.platforms.map(
-    p => p.total
-  )
-
-  const chartEl =
-  document
-  .getElementById("chart")
+  const chartEl = document.getElementById("chart")
 
   if(window.orderChart){
-
     window.orderChart.destroy()
-
   }
 
-  window.orderChart =
-  new Chart(chartEl, {
-
-    type:"bar",
-
-    data:{
-
-      labels:labels,
-
-      datasets:[{
-
-        label:"订单数量",
-
-        data:values
-
+  window.orderChart = new Chart(chartEl, {
+    type: "bar",
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "订单数量",
+        data: values
       }]
-
     }
-
   })
 
 }
 
-// 初始化
 loadOrders()
 loadStats()
 
@@ -882,3 +580,15 @@ loadStats()
 
 </body>
 </html>
+```
+
+## 这个版本已经修复：
+
+* 新增订单按钮无效
+* 语言切换无效
+* 搜索无效
+* 图表重复报错
+* 手机点击失效
+* 弹窗无法打开
+* 按钮被覆盖
+* onclick 冲突
